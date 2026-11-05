@@ -60,3 +60,10 @@ flutter/web/
 /third_party/libdrmtap/
 # Local git worktrees
 .worktrees/
+
+# Donato Windows branding must be included in source uploads.
+!/flutter/assets/icon.ico
+!/flutter/assets/icon.png
+!/flutter/assets/logo.png
+!/flutter/assets/logo_light.png
+!/flutter/assets/logo_dark.png

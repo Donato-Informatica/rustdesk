@@ -40,6 +40,11 @@ use std::sync::{Arc, Mutex};
 // Restrict names because installers interpolate them into privileged scripts and paths.
 #[cfg(any(windows, target_os = "macos"))]
 fn validate_install_app_name(app_name: &str) -> ResultType<()> {
+    #[cfg(windows)]
+    if app_name == crate::donato::APP_NAME {
+        return Ok(());
+    }
+
     let mut bytes = app_name.bytes();
     let Some(first) = bytes.next() else {
         hbb_common::bail!("Application name must not be empty.");
@@ -260,6 +265,8 @@ mod tests {
             assert!(validate_install_app_name(app_name).is_err(), "{app_name}");
         }
 
+        #[cfg(windows)]
+        assert!(validate_install_app_name(crate::donato::APP_NAME).is_ok());
         #[cfg(windows)]
         assert!(validate_install_app_name("-RustDesk").is_ok());
         #[cfg(target_os = "macos")]
