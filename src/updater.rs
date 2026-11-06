@@ -187,6 +187,11 @@ fn start_auto_update_check_(rx_msg: Receiver<UpdateMsg>) {
 }
 
 fn check_update(manually: bool) -> ResultType<()> {
+    // Donato releases are distributed separately from the upstream update feed.
+    #[cfg(target_os = "windows")]
+    if crate::get_app_name() == crate::donato::APP_NAME {
+        return Ok(());
+    }
     // On macOS, auto-update is handled by check_update_as_root() in the service process.
     // The shared check_update() path is only used for manual update checks from the GUI.
     #[cfg(target_os = "macos")]
